@@ -1,9 +1,14 @@
 import React from 'react'
+import RecruitmentPage from '../components/RecruitmentPage'
+import Sidebar from '../components/Sidebar'
 
-const RecruitmentPage = () => {
+const RecruitmentPageHero = () => {
   return (
-    <div>RecruitmentPage</div>
+    <div className="flex">
+      <RecruitmentPage></RecruitmentPage>
+      <Sidebar/>
+    </div>
   )
 }
 
-export default RecruitmentPage
+export default RecruitmentPageHero

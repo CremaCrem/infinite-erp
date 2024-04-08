@@ -52,7 +52,7 @@ function renderEventContent(eventInfo) {
 
 const Calendar = () => {
   return (
-      <StyleWrapper className='flex justify-end mr-[80px] mt-6'>
+      <StyleWrapper className='flex justify-end mr-[80px] mt-5 mb-6'>
         <FullCalendar
             plugins={[dayGridPlugin, interactionPlugin]}
             initialView='dayGridMonth'

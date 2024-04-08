@@ -21,6 +21,10 @@
   }
 }
 
+html, body {
+  overflow: hidden;
+}
+
 body {
   background-image: linear-gradient(to top left, #0B132B, #3A506B);
 }
