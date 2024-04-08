@@ -1,6 +1,7 @@
 import React from 'react'
 import SettingsBtn from './SettingsBtn'
 import SignOutBtn from './SignOutBtn'
+import Link from 'next/link'
 
 const Sidebar = () => {
   return (
@@ -10,14 +11,14 @@ const Sidebar = () => {
         </div>
         <ul className='mt-8'>
             <li className='mb-2 py-2'>
-                <a href='' className='mb-5 ml-8 px-3 flex justify-left text-white text-xl font-Lato'>
+                <Link href='/' className='mb-5 ml-8 px-3 flex justify-left text-white text-xl font-Lato'>
                     <img src="/icons/carbon_notebook.svg" alt='Dashboard Icon' className='inline-block mr-2'></img>
                     Dashboard
-                </a>
-                <a href='/recruitment' className='mb-5 ml-8 px-3 flex justify-left text-white text-xl font-Lato'>
+                </Link>
+                <Link href='/recruitment' className='mb-5 ml-8 px-3 flex justify-left text-white text-xl font-Lato'>
                     <img src="/icons/carbon_category.svg" alt='Recruitment Icon' className='inline-block mr-2'></img>
                     Recruitment
-                </a>
+                </Link>
                 <a href='' className='mb-5 ml-8 px-3 flex justify-left text-white text-xl font-Lato'>
                     <img src="/icons/carbon_user-profile.svg" alt='Employee Record Icon' className='inline-block mr-2'></img>
                     Employee Record

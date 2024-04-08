@@ -7,9 +7,10 @@ import EmployeeRelationsPreviewBox from './EmployeeRelationsPreviewBox';
 import EmployeeTrainingDevelopmentPreviewBox from './EmployeeTrainingDevelopmentPreviewBox';
 
 const Hero = () => {
+  const pageTitle = 'Dashboard'
   return (
     <div className='w-full flex flex-col h-screen'>
-      <Navbar />
+      <Navbar pageTitle={pageTitle} />
       <div className='flex-grow flex'>
         <div className='w-full flex'>
           <div className='flex-grow flex-col ml-[300px] h-[1080px]'>
