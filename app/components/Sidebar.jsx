@@ -7,11 +7,11 @@ const Sidebar = () => {
   return (
     <div className='w-[285px] bg-MediumBlue fixed h-full px-4 py-2'>
         <div>
-            <h1 className='text-2x text-NeonGreen text-4xl font-bold font-Montserrat mb-[50px] mt-[65px] ml-8 flex justify-center'>INFINITE ERP</h1>
+            <Link href='/portal' className='text-2x text-NeonGreen text-4xl font-bold font-Montserrat mb-[50px] mt-[65px] ml-8 flex justify-center'>INFINITE ERP</Link>
         </div>
         <ul className='mt-8'>
             <li className='mb-2 py-2'>
-                <Link href='/' className='mb-5 ml-8 px-3 flex justify-left text-white text-xl font-Lato'>
+                <Link href='/dashboard' className='mb-5 ml-8 px-3 flex justify-left text-white text-xl font-Lato'>
                     <img src="/icons/carbon_notebook.svg" alt='Dashboard Icon' className='inline-block mr-2'></img>
                     Dashboard
                 </Link>

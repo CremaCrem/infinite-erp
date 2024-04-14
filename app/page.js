@@ -1,12 +1,10 @@
 import Image from "next/image";
-import Hero from "./components/Hero";
-import Sidebar from "./components/Sidebar";
+import Portal from "./portal/page";
 
 export default function Home() {
   return (
   <div className="flex">
-    <Hero></Hero>
-    <Sidebar></Sidebar>
+    <Portal/>
   </div>
   );
 }

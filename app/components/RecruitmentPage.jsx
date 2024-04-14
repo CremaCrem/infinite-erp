@@ -14,7 +14,7 @@ const RecruitmentPage = () => {
           <div className='w-full flex'>
             <div>
               <RecruitmentBox/>
-              <ApplicantInfoBox/>
+
             </div>
             <div  className='flex flex-col justify-start'>
               <Calendar/>
