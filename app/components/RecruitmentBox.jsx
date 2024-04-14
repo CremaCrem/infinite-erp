@@ -88,6 +88,7 @@ const RecruitmentBox = () => {
             contactInfo={selectedRecruit.recruitContactInfo}
             picturePath={selectedRecruit.recruitPicture}
             resumePath={selectedRecruit.pdf}
+            profession={selectedRecruit.desiredProfession}
           />
         </div>
       )}

@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 
-const ApplicantInfoBox = ({ name, contactInfo, picturePath, resumePath }) => {
+const ApplicantInfoBox = ({ name, contactInfo, picturePath, resumePath, profession }) => {
   return (
     <div className='h-[260px] w-[950px] bg-white mr-5 ml-5 mt-[23px] rounded-[20px]'>
       <h1 className='pr-5 pl-5 pt-3 text-LightBlue text-2xl font-Montserrat font-semibold'>
@@ -21,6 +21,15 @@ const ApplicantInfoBox = ({ name, contactInfo, picturePath, resumePath }) => {
                 <img src='/icons/mdi_resume.svg' alt="Resume" className='w-7 cursor-pointer' />
               </a>
             </h2>
+            <h2 className='text-[20px] flex gap-x-5 font-normal'>
+              Desired Position: {profession}
+            </h2>
+            <div className='flex justify-start gap-x-5'>
+              <img className='mt-[10px] w-8 h-8' src='/icons/mail.svg'/>
+              <img className='mt-[10px] w-9 h-8' src='/icons/carbon_logo-facebook-LB.svg'/>
+              <img className='mt-[10px] w-9 h-8' src='/icons/carbon_logo-linkedin-LB.svg'/>
+            </div>
+            
           </div>
         </div>
       </h1>
