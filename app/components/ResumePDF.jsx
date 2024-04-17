@@ -21,6 +21,7 @@ const ResumePDF = ({ onClose }) => {
         formData.append('picture', picture)
         formData.append("file", file)
         console.log(file, name, position, status, contact, picture)
+        console.log('FormData:', formData);
         const result = await axios.post("http://localhost:5000/recruit", formData, {headers: {"Content-Type": "multipart/form-data"}});
     }
   return (

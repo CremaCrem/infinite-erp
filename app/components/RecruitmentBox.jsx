@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import RecruitmentDropdown from './RecruitmentDropdown';
-import ResumePDF from './ResumePDF';
+import EditRecruitModal from './EditRecruitModal';
 import ApplicantInfoBox from './ApplicantInfoBox';
 
 const RecruitmentBox = () => {
@@ -28,8 +28,9 @@ const RecruitmentBox = () => {
     setSelectedRecruit(recruitmentData[index]);
   };
 
-  const handleEdit = () => {
+  const handleEdit = (index) => {
     console.log('Edit clicked');
+    setSelectedRecruit(recruitmentData[index])
     setIsModalOpen(true)
   };
 
@@ -60,7 +61,7 @@ const RecruitmentBox = () => {
                   className={`inline-block ml-5 ${hoverIndex === index ? 'shift-left' : ''}`}
                   style={{ position: 'absolute', top: '50%', left: '300%', transform: 'translateY(-50%)' }}
                   onMouseEnter={() => setHoverIndex(index)}
-                  onClick={handleEdit}
+                  onClick={() => handleEdit(index)}
                 />
                 {hoverIndex === index && (
                   <RecruitmentDropdown
@@ -77,7 +78,12 @@ const RecruitmentBox = () => {
         {/* Modal Screen */}
         {isModalOpen && (
           <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 bg-opacity-50 z-10'>
-            <ResumePDF isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+            <EditRecruitModal 
+              isOpen={isModalOpen} 
+              onClose={() => setIsModalOpen(false)} 
+              recruit={selectedRecruit}
+              recruitId={selectedRecruit._id}
+            />
           </div>
         )}
       </div>

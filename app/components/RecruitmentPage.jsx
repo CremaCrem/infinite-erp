@@ -1,7 +1,6 @@
 import React from 'react'
 import Navbar from './Navbar'
 import Calendar from './Calendar'
-import ApplicantInfoBox from './ApplicantInfoBox'
 import RecruitmentBox from './RecruitmentBox'
 import NewApplicantBox from './NewApplicantBox'
 

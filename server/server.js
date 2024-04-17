@@ -54,7 +54,8 @@ function getRelativePath(absolutePath) {
     return relativePath;
 }
 
-//Recruitment 
+// Recruitment
+//Add
 server.post("/recruit", upload.fields([{ name: 'file' }, { name: 'picture' }]), async(req, res) =>{
     const { name, position, status, contact } = req.body;
     const { file, picture } = req.files;
@@ -73,14 +74,81 @@ server.post("/recruit", upload.fields([{ name: 'file' }, { name: 'picture' }]), 
     }
 })
 
-// Fetch recruitment data endpoint
+// Get
 server.get("/recruit", async (req, res) => {
     try {
-      const recruitmentData = await recruit.find(); // Fetch all recruitment data from the database
-      res.json(recruitmentData);
+      const recruitmentData = await recruit.find();
+      res.json(recruitmentData)
     } catch (error) {
-      console.error("Error fetching recruitment data:", error);
-      res.status(500).json({ error: "Internal server error" });
+      console.error("Error fetching recruitment data:", error)
+      res.status(500).json({ error: "Internal server error" })
     }
   });
-  
+
+
+  //Update
+  server.put('/recruit/:id', upload.fields([{ name: 'file' }, { name: 'picture' }]), async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        console.log("Received PUT request for recruit with ID:", id);
+
+        console.log("Request body:", req.body);
+        console.log("Request files:", req.files);
+
+        const { name, position, status, contact } = req.body;
+
+        const { file, picture } = req.files || {};
+        const pdfPath = file ? getRelativePath(file[0].path) : req.body.pdf;
+        const picturePath = picture ? getRelativePath(picture[0].path) : req.body.recruitPicture;
+
+        const update = {
+            recruitFullName: name,
+            desiredProfession: position,
+            recruitmentStatus: status,
+            recruitContactInfo: contact,
+            pdf: pdfPath,
+            recruitPicture: picturePath
+        };
+
+        const updatedRecruit = await recruit.findByIdAndUpdate(id, update, { new: true });
+
+        console.log("Updated recruit:", updatedRecruit);
+
+        if (!updatedRecruit) {
+            console.log("Recruit not found");
+            return res.status(404).json({ message: "Not Found" });
+        }
+
+        console.log("Recruit updated successfully");
+
+        res.status(200).json(updatedRecruit);
+    } catch (error) {
+        console.error("Error updating recruit:", error);
+        res.status(500).json({ message: error.message });
+    }
+})
+
+// Delete
+server.delete('/recruit/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        console.log("Received DELETE request for recruit with ID:", id);
+
+        const deletedRecruit = await recruit.findByIdAndDelete(id);
+
+        if (!deletedRecruit) {
+            console.log("Recruit not found");
+            return res.status(404).json({ message: "Not Found" });
+        }
+
+        console.log("Recruit deleted successfully");
+
+        res.status(200).json({ message: "Recruit deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting recruit:", error);
+        res.status(500).json({ message: error.message });
+    }
+});
+
