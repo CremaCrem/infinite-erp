@@ -5,7 +5,8 @@ server.use(express.json())
 const cors = require('cors')
 
 const mongoURL = "mongodb+srv://j3remyz1on:Pm12duvQmpReJgb6@cluster0.0sqyiib.mongodb.net/hr-sia-database"
-const path = require('path');
+const path = require('path')
+const fs = require('fs')
 
 server.use(cors())
 
@@ -132,23 +133,35 @@ server.get("/recruit", async (req, res) => {
 // Delete
 server.delete('/recruit/:id', async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id } = req.params
 
-        console.log("Received DELETE request for recruit with ID:", id);
+        console.log("Received DELETE request for recruit with ID:", id)
 
-        const deletedRecruit = await recruit.findByIdAndDelete(id);
+        const recruitToDelete = await recruit.findById(id);
 
-        if (!deletedRecruit) {
-            console.log("Recruit not found");
-            return res.status(404).json({ message: "Not Found" });
+        if (!recruitToDelete) {
+            console.log("Recruit not found")
+            return res.status(404).json({ message: "Recruit not found" })
         }
 
-        console.log("Recruit deleted successfully");
+        const picturePath = path.join(__dirname, '../public', recruitToDelete.recruitPicture)
+        const pdfPath = path.join(__dirname, '../public', recruitToDelete.pdf)
 
-        res.status(200).json({ message: "Recruit deleted successfully" });
+        fs.unlinkSync(picturePath)
+        console.log("Picture file deleted successfully")
+
+        fs.unlinkSync(pdfPath);
+        console.log("Resume file deleted successfully")
+
+        const deletedRecruit = await recruit.findByIdAndDelete(id)
+
+        console.log("Recruit deleted successfully from the database")
+
+        res.status(200).json({ message: "Recruit deleted successfully" })
     } catch (error) {
-        console.error("Error deleting recruit:", error);
-        res.status(500).json({ message: error.message });
+        console.error("Error deleting recruit:", error)
+        res.status(500).json({ message: error.message })
     }
-});
+})
+
 

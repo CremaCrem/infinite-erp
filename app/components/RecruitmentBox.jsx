@@ -1,42 +1,75 @@
 'use client';
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import RecruitmentDropdown from './RecruitmentDropdown';
-import EditRecruitModal from './EditRecruitModal';
-import ApplicantInfoBox from './ApplicantInfoBox';
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import RecruitmentDropdown from './RecruitmentDropdown'
+import EditRecruitModal from './EditRecruitModal'
+import ApplicantInfoBox from './ApplicantInfoBox'
+import ConfirmationDialog from './ConfirmationDialog'
+import ResumePDF from './ResumePDF'
 
 const RecruitmentBox = () => {
-  const [recruitmentData, setRecruitmentData] = useState([]);
-  const [hoverIndex, setHoverIndex] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedRecruit, setSelectedRecruit] = useState(null);
+  const [recruitmentData, setRecruitmentData] = useState([])
+  const [hoverIndex, setHoverIndex] = useState(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedRecruit, setSelectedRecruit] = useState(null)
+  const [showConfirmation, setShowConfirmation] = useState(false)
+  const [showEditConfirmation, setShowEditConfirmation] = useState(false)
+  const [showAddModal, setShowAddModal] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/recruit');
+        const response = await axios.get('http://localhost:5000/recruit')
         setRecruitmentData(response.data); 
       } catch (error) {
-        console.error('Error fetching recruitment data:', error);
+        console.error('Error fetching recruitment data:', error)
       }
-    };
+    }
  
     fetchData();
   }, []);
 
   const handleRecruitClick = (index) => {
-    setSelectedRecruit(recruitmentData[index]);
-  };
-
-  const handleEdit = (index) => {
-    console.log('Edit clicked');
     setSelectedRecruit(recruitmentData[index])
-    setIsModalOpen(true)
-  };
+  }
 
-  const handleDelete = () => {
-    console.log('Delete clicked');
-  };
+  const handleEdit = async (index) => {
+    console.log('Edit clicked');
+    setSelectedRecruit(recruitmentData[index]);
+    setShowEditConfirmation(true); // Show confirmation dialog before opening the edit modal
+  }
+
+  const confirmEdit = async () => {
+    setIsModalOpen(true); // Open the edit modal after confirmation
+    setShowEditConfirmation(false); // Hide the confirmation dialog
+  }
+
+  const cancelEdit = () => {
+    setShowEditConfirmation(false); // Hide the confirmation dialog
+  }
+  
+  const handleDelete = async () => {
+    if (!selectedRecruit) return
+
+    setShowConfirmation(true);
+  }
+
+  const confirmDelete = async () => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/recruit/${selectedRecruit._id}`)
+      console.log('Recruit deleted successfully:', response.data)
+      window.location.reload()
+    } catch (error) {
+      console.error('Error deleting recruit:', error)
+    }
+  }
+  const cancelDelete = () => {
+    setShowConfirmation(false);
+  }
+
+  const toggleAddModal = () => {
+    setShowAddModal(!showAddModal)
+  }
 
   return (
     <div className='flex flex-col'>
@@ -44,6 +77,9 @@ const RecruitmentBox = () => {
         <h1 className='pr-5 pl-5 pt-3 text-LightBlue text-2xl font-Montserrat font-bold'>
           Recruitment Progress
         </h1>
+        <div className="absolute top-[145px] right-[620px]">
+          <button className="bg-NeonGreen hover:bg-Goldy transition-all duration-100 w-[80px] text-white font-Lato font-bold py-2 px-4 rounded-[24px] mt-3" onClick={toggleAddModal}>Add</button>
+        </div>
         <div className='pr-5 pl-5'>
           <div className='text-LightBlue font-Montserrat flex justify-between pt-3 mr-[100px]'>
             <div className='text-lg font-bold' style={{ width: '20%' }}>Full Name</div>
@@ -75,15 +111,45 @@ const RecruitmentBox = () => {
             </div>
           ))}
         </div>
+        {/* Confirmation Dialog for Edit */}
+        {showEditConfirmation && (
+          <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-70 z-10'>
+            <ConfirmationDialog
+              message="Are you sure you want to edit this recruit?"
+              onConfirm={confirmEdit}
+              onCancel={cancelEdit}
+              onClose={() => setShowEditConfirmation(false)}
+              icon="/icons/carbon_edit.svg"
+            />
+          </div>
+        )}
+        {/* Confirmation Dialog for Delete */}
+        {showConfirmation && (
+          <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-70 z-10'>
+            <ConfirmationDialog
+              message="Are you sure you want to delete this recruit?"
+              onConfirm={confirmDelete}
+              onCancel={cancelDelete}
+              onClose={() => setShowConfirmation(false)}
+              icon="/icons/carbon_trash-can.svg"
+            />
+          </div>
+        )}
         {/* Modal Screen */}
         {isModalOpen && (
-          <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 bg-opacity-50 z-10'>
+          <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-70 z-10'>
             <EditRecruitModal 
               isOpen={isModalOpen} 
               onClose={() => setIsModalOpen(false)} 
               recruit={selectedRecruit}
               recruitId={selectedRecruit._id}
             />
+          </div>
+        )}
+        {/* Add Modal */}
+        {showAddModal && (
+          <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-70 z-10'>
+            <ResumePDF onClose={toggleAddModal} /> {/* Pass the toggle function to close the modal */}
           </div>
         )}
       </div>

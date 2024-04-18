@@ -52,6 +52,7 @@ const EditRecruitModal = ({ recruit, onClose, recruitId }) => {
             const response = await axios.put(`http://localhost:5000/recruit/${recruitId}`, formData);
             console.log('Recruit updated:', response.data);
             onClose();
+            window.location.reload()
         } catch (error) {
             console.error('Error updating recruit:', error);
         }

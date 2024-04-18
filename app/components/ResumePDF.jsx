@@ -11,26 +11,33 @@ const ResumePDF = ({ onClose }) => {
     const [picture, setPicture] = useState("")
     const [file, setFile] = useState("")
 
-    const submitImage = async(e) => {
-        e.preventDefault()
-        const formData = new FormData()
-        formData.append('name', name)
-        formData.append('position', position)
-        formData.append('status', status)
-        formData.append('contact', contact)
-        formData.append('picture', picture)
-        formData.append("file", file)
-        console.log(file, name, position, status, contact, picture)
+    const submitImage = async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('position', position);
+        formData.append('status', status);
+        formData.append('contact', contact);
+        formData.append('picture', picture);
+        formData.append("file", file);
+        console.log(file, name, position, status, contact, picture);
         console.log('FormData:', formData);
-        const result = await axios.post("http://localhost:5000/recruit", formData, {headers: {"Content-Type": "multipart/form-data"}});
+        try {
+            const result = await axios.post("http://localhost:5000/recruit", formData)
+            console.log('Recruit added successfully:', result.data);
+            window.location.reload();
+        } catch (error) {
+            console.error('Error adding recruit:', error);
+        }
     }
+    
   return (
     <div className='h-[590px] w-[500px] bg-white rounded-[20px]'>
         <div className='mt-2 ml-2 mr-2 flex justify-end'>
             <img src="/icons/icons8-close.svg" alt='Close Icon' className='w-8 cursor-pointer hover:bg-red-300 hover:rounded-[10px] transition-all duration-200' onClick={onClose}/>
         </div>
         <form className='text-LightBlue  mt-1 flex justify-center flex-col items-center' onSubmit={submitImage}>
-            <h1 className='text-2xl font-Montserrat font-bold m-5'>Edit Info</h1>
+            <h1 className='text-2xl font-Montserrat font-bold m-5'>Add Recruit</h1>
             <input type="text" className='border border-black h-[50px] rounded-[20px] placeholder-top-5 placeholder-left-10' placeholder='Full Name' required onChange={(e) => setName(e.target.value)}></input>
             <br></br>
             <input type="text" className='border border-black h-[50px] rounded-[20px] placeholder-top-5 placeholder-left-10' placeholder='Desired Position' required onChange={(e) => setPosition(e.target.value)}></input>
