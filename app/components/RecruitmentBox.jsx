@@ -1,5 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react'
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios'
 import RecruitmentDropdown from './RecruitmentDropdown'
 import EditRecruitModal from './EditRecruitModal'
@@ -34,23 +36,22 @@ const RecruitmentBox = () => {
   }
 
   const handleEdit = async (index) => {
-    console.log('Edit clicked');
-    setSelectedRecruit(recruitmentData[index]);
-    setShowEditConfirmation(true); // Show confirmation dialog before opening the edit modal
+    console.log('Edit clicked')
+    setSelectedRecruit(recruitmentData[index])
+    setShowEditConfirmation(true)
   }
 
   const confirmEdit = async () => {
-    setIsModalOpen(true); // Open the edit modal after confirmation
-    setShowEditConfirmation(false); // Hide the confirmation dialog
+    setIsModalOpen(true)
+    setShowEditConfirmation(false) 
   }
 
   const cancelEdit = () => {
-    setShowEditConfirmation(false); // Hide the confirmation dialog
+    setShowEditConfirmation(false) 
   }
   
   const handleDelete = async () => {
     if (!selectedRecruit) return
-
     setShowConfirmation(true);
   }
 
@@ -58,7 +59,13 @@ const RecruitmentBox = () => {
     try {
       const response = await axios.delete(`http://localhost:5000/recruit/${selectedRecruit._id}`)
       console.log('Recruit deleted successfully:', response.data)
-      window.location.reload()
+      toast.success('Recruit successfully deleted!', {
+        position: 'top-center',
+        autoClose: 800,
+      })
+      setTimeout(() => {
+        window.location.reload();
+    }, 1000)
     } catch (error) {
       console.error('Error deleting recruit:', error)
     }
@@ -73,20 +80,19 @@ const RecruitmentBox = () => {
 
   return (
     <div className='flex flex-col'>
-      <div className='h-[450px] w-[950px] bg-white mr-5 ml-5 mt-[23px] rounded-[20px]'>
+      <div className='h-[450px] w-[950px] bg-white mr-5 ml-5 mt-[23px] rounded-[20px] overflow-y-auto'>
         <h1 className='pr-5 pl-5 pt-3 text-LightBlue text-2xl font-Montserrat font-bold'>
           Recruitment Progress
         </h1>
-        <div className="absolute top-[145px] right-[620px]">
+        <div className="absolute top-[145px] right-[625px]">
           <button className="bg-NeonGreen hover:bg-Goldy transition-all duration-100 w-[80px] text-white font-Lato font-bold py-2 px-4 rounded-[24px] mt-3" onClick={toggleAddModal}>Add</button>
         </div>
-        <div className='pr-5 pl-5'>
+        <div className='pr-5 pl-5 '>
           <div className='text-LightBlue font-Montserrat flex justify-between pt-3 mr-[100px]'>
             <div className='text-lg font-bold' style={{ width: '20%' }}>Full Name</div>
             <div className='text-lg font-bold' style={{ width: '10%' }}>Profession</div>
             <div className='text-lg font-bold' style={{ width: '20%' }}>Status</div>
           </div>
-          
           {recruitmentData.map((data, index) => (
             <div key={index} className='text-LightBlue font-Montserrat flex justify-between pt-3 mr-[100px]' onMouseLeave={() => setHoverIndex(null)}>
               <div style={{ width: '30%', position: 'relative' }} onClick={() => handleRecruitClick(index)}>
@@ -95,7 +101,7 @@ const RecruitmentBox = () => {
                   src="/icons/carbon_overflow-menu-vertical.svg" 
                   alt='Overflow Menu Icon' 
                   className={`inline-block ml-5 ${hoverIndex === index ? 'shift-left' : ''}`}
-                  style={{ position: 'absolute', top: '50%', left: '300%', transform: 'translateY(-50%)' }}
+                  style={{ position: 'absolute', top: '50%', left: '305%', transform: 'translateY(-50%)' }}
                   onMouseEnter={() => setHoverIndex(index)}
                   onClick={() => handleEdit(index)}
                 />
@@ -135,6 +141,8 @@ const RecruitmentBox = () => {
             />
           </div>
         )}
+        {/* Toast Container */}
+        <ToastContainer />
         {/* Modal Screen */}
         {isModalOpen && (
           <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-70 z-10'>
@@ -149,9 +157,11 @@ const RecruitmentBox = () => {
         {/* Add Modal */}
         {showAddModal && (
           <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-70 z-10'>
-            <ResumePDF onClose={toggleAddModal} /> {/* Pass the toggle function to close the modal */}
+            <ResumePDF onClose={toggleAddModal} />
           </div>
         )}
+        <br/>
+        <br/>
       </div>
       {selectedRecruit && (
         <div className=''>

@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
+import { toast } from 'react-toastify'
 import axios from 'axios'
 
 const EditRecruitModal = ({ recruit, onClose, recruitId }) => {
@@ -10,26 +11,19 @@ const EditRecruitModal = ({ recruit, onClose, recruitId }) => {
     const [contact, setContact] = useState(recruit.recruitContactInfo || '');
     const [picture, setPicture] = useState(null);
     const [file, setFile] = useState(null);
-  
+
     useEffect(() => {
-      setName(recruit.recruitFullName || '');
-      setPosition(recruit.desiredProfession || '');
-      setStatus(recruit.recruitmentStatus || '');
-      setContact(recruit.recruitContactInfo || '');
+        if (recruit) {
+            setName(recruit.recruitFullName || '');
+            setPosition(recruit.desiredProfession || '');
+            setStatus(recruit.recruitmentStatus || '');
+            setContact(recruit.recruitContactInfo || '');
+        }
     }, [recruit]);
-  
+
     const submitForm = async (e) => {
         e.preventDefault();
-    
-        console.log('Submitting form...');
-        
-        console.log('Name:', name);
-        console.log('Position:', position);
-        console.log('Status:', status);
-        console.log('Contact:', contact);
-        console.log('Picture:', picture);
-        console.log('File:', file);
-    
+
         const formData = new FormData();
         formData.append('name', name);
         formData.append('position', position);
@@ -41,23 +35,30 @@ const EditRecruitModal = ({ recruit, onClose, recruitId }) => {
         if (file) {
             formData.append('file', file);
         }
-        console.log( name, position, status, contact)
-    
-        for (var pair of formData.entries()) {
-            console.log(pair[0]+ ', ' + pair[1]); 
-        }
-        
-        
+
         try {
             const response = await axios.put(`http://localhost:5000/recruit/${recruitId}`, formData);
             console.log('Recruit updated:', response.data);
-            onClose();
-            window.location.reload()
+            toast.success('Recruit successfully edited!',{
+                position: 'top-center',
+                autoClose: 900,
+            });
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000)
         } catch (error) {
             console.error('Error updating recruit:', error);
+            toast.error('Error editing recruit');
         }
-        
-    }
+    };
+
+    useEffect(() => {
+        const storedNotification = localStorage.getItem('notification');
+        if (storedNotification) {
+            toast.success(storedNotification);
+            localStorage.removeItem('notification');
+        }
+    }, []);
     
 
   return (
@@ -73,28 +74,33 @@ const EditRecruitModal = ({ recruit, onClose, recruitId }) => {
             <h1 className='text-2xl font-Montserrat font-bold m-5'>Edit Info</h1>
             <input 
                 type="text" 
-                className='border border-black h-[50px] rounded-[20px] placeholder-top-5 placeholder-left-10' 
-                placeholder='Full Name' onChange={(e) => setName(e.target.value)}>
+                className='border border-black h-[50px] rounded-[20px] px-2 placeholder-top-5 placeholder-left-10' 
+                placeholder='Full Name'
+                value={name}
+                onChange={(e) => setName(e.target.value)}>
             </input>
             <br></br>
             <input 
                 type="text" 
-                className='border border-black h-[50px] rounded-[20px] placeholder-top-5 placeholder-left-10' 
+                className='border border-black h-[50px] rounded-[20px] px-2 placeholder-top-5 placeholder-left-10' 
                 placeholder='Desired Position' 
+                value={position}
                 onChange={(e) => setPosition(e.target.value)}>
             </input>
             <br></br>
             <input 
                 type="text" 
-                className='border border-black h-[50px] rounded-[20px] placeholder-top-5 placeholder-left-10' 
+                className='border border-black h-[50px] rounded-[20px] px-2 placeholder-top-5 placeholder-left-10' 
                 placeholder='Recruitment Status' 
+                value={status}
                 onChange={(e) => setStatus(e.target.value)}>
             </input>
             <br></br>
             <input 
                 type="text" 
-                className='border border-black h-[50px] rounded-[20px] placeholder-top-5 placeholder-left-10' 
+                className='border border-black h-[50px] rounded-[20px] px-2 placeholder-top-5 placeholder-left-10' 
                 placeholder='Contact Info' 
+                value={contact}
                 onChange={(e) => setContact(e.target.value)}>
             </input>
             <br></br>
@@ -119,7 +125,6 @@ const EditRecruitModal = ({ recruit, onClose, recruitId }) => {
                 Submit
             </button>
         </form>
-        <div></div>
     </div>
   )
 }

@@ -86,6 +86,16 @@ server.get("/recruit", async (req, res) => {
     }
   });
 
+// Get most recent applicants
+server.get("/recent-applicants", async (req, res) => {
+    try {
+      const recentApplicants = await recruit.find().sort({ _id: -1 }).limit(7); // Sort by _id in descending order and limit to 4
+      res.json(recentApplicants);
+    } catch (error) {
+      console.error("Error fetching recent applicants:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
 
   //Update
   server.put('/recruit/:id', upload.fields([{ name: 'file' }, { name: 'picture' }]), async (req, res) => {

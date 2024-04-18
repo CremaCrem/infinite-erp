@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { toast } from 'react-toastify'
 import axios from 'axios'
 
 const ResumePDF = ({ onClose }) => {
@@ -25,11 +26,25 @@ const ResumePDF = ({ onClose }) => {
         try {
             const result = await axios.post("http://localhost:5000/recruit", formData)
             console.log('Recruit added successfully:', result.data);
-            window.location.reload();
+            toast.success('Recruit successfully added!',{
+                position: 'top-center',
+                autoClose: 800,
+            });
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000)
         } catch (error) {
             console.error('Error adding recruit:', error);
         }
     }
+
+    useEffect(() => {
+        const storedNotification = localStorage.getItem('notification');
+        if (storedNotification) {
+            toast.success(storedNotification);
+            localStorage.removeItem('notification');
+        }
+    }, []);
     
   return (
     <div className='h-[590px] w-[500px] bg-white rounded-[20px]'>
@@ -38,13 +53,13 @@ const ResumePDF = ({ onClose }) => {
         </div>
         <form className='text-LightBlue  mt-1 flex justify-center flex-col items-center' onSubmit={submitImage}>
             <h1 className='text-2xl font-Montserrat font-bold m-5'>Add Recruit</h1>
-            <input type="text" className='border border-black h-[50px] rounded-[20px] placeholder-top-5 placeholder-left-10' placeholder='Full Name' required onChange={(e) => setName(e.target.value)}></input>
+            <input type="text" className='border border-black h-[50px] rounded-[20px] px-2 placeholder-top-5 placeholder-left-2' placeholder='Full Name' required onChange={(e) => setName(e.target.value)}></input>
             <br></br>
-            <input type="text" className='border border-black h-[50px] rounded-[20px] placeholder-top-5 placeholder-left-10' placeholder='Desired Position' required onChange={(e) => setPosition(e.target.value)}></input>
+            <input type="text" className='border border-black h-[50px] rounded-[20px] px-2 placeholder-top-5 placeholder-left-2' placeholder='Desired Position' required onChange={(e) => setPosition(e.target.value)}></input>
             <br></br>
-            <input type="text" className='border border-black h-[50px] rounded-[20px] placeholder-top-5 placeholder-left-10' placeholder='Recruitment Status' required onChange={(e) => setRecruitmentStatus(e.target.value)}></input>
+            <input type="text" className='border border-black h-[50px] rounded-[20px] px-2 placeholder-top-5 placeholder-left-2' placeholder='Recruitment Status' required onChange={(e) => setRecruitmentStatus(e.target.value)}></input>
             <br></br>
-            <input type="text" className='border border-black h-[50px] rounded-[20px] placeholder-top-5 placeholder-left-10' placeholder='Contact Info' required onChange={(e) => setContatctInfo(e.target.value)}></input>
+            <input type="text" className='border border-black h-[50px] rounded-[20px] px-2 placeholder-top-5 placeholder-left-2' placeholder='Contact Info' required onChange={(e) => setContatctInfo(e.target.value)}></input>
             <br></br>
             <input type="file" className='border border-black h-[30px] w-[300px] rounded-xl' accept='image/png, image/jpeg' required onChange={(e) => setPicture(e.target.files[0])}></input>
             <br></br>
