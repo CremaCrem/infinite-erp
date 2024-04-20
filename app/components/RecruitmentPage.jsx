@@ -13,7 +13,6 @@ const RecruitmentPage = () => {
           <div className='w-full flex'>
             <div>
               <RecruitmentBox/>
-
             </div>
             <div  className='flex flex-col justify-start'>
               <Calendar/>

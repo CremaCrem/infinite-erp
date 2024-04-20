@@ -87,7 +87,7 @@ const RecruitmentBox = () => {
         <div className="absolute top-[145px] right-[625px]">
           <button className="bg-NeonGreen hover:bg-Goldy transition-all duration-100 w-[80px] text-white font-Lato font-bold py-2 px-4 rounded-[24px] mt-3" onClick={toggleAddModal}>Add</button>
         </div>
-        <div className='pr-5 pl-5 '>
+        <div className='pr-5 pl-5'>
           <div className='text-LightBlue font-Montserrat flex justify-between pt-3 mr-[100px]'>
             <div className='text-lg font-bold' style={{ width: '20%' }}>Full Name</div>
             <div className='text-lg font-bold' style={{ width: '10%' }}>Profession</div>

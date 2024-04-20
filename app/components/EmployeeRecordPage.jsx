@@ -1,5 +1,6 @@
 import React from 'react'
 import Navbar from './Navbar'
+import EmployeeBox from './EmployeeBox'
 
 
 const EmployeeRecordPage = () => {
@@ -7,8 +8,8 @@ const EmployeeRecordPage = () => {
   return (
     <div className='w-full flex flex-col h-screen'>
         <Navbar pageTitle={pageTitle}/>
-        <div className='flex justify-center'>
-          
+        <div className='flex ml-[315px]'>
+          <EmployeeBox/>
         </div>
         
     </div>

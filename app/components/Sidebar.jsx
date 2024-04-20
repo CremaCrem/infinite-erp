@@ -23,7 +23,7 @@ const Sidebar = () => {
                     <img src="/icons/carbon_user-profile.svg" alt='Employee Record Icon' className='inline-block mr-2'></img>
                     Employee Record
                 </Link>
-                <a href='' className='mb-5 ml-8 px-3 flex justify-left text-white text-xl font-Lato'>
+                <a href='/relations' className='mb-5 ml-8 px-3 flex justify-left text-white text-xl font-Lato'>
                     <img src="/icons/carbon_airline-passenger-care.svg" alt='Relations Icon' className='inline-block mr-2'></img>
                     Relations
                 </a>
