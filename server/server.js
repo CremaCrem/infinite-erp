@@ -72,10 +72,8 @@ function getRelativePath(absolutePath) {
 function getEmployeeRelativePath(absolutePath) {
     const rootDir = path.join(__dirname, '../public');
     const relativePath = path.relative(rootDir, absolutePath);
-    const employeeFilesDir = path.join('files', 'employeefiles');
-    return path.join(employeeFilesDir, relativePath);
+    return relativePath;
 }
-
 
 // Recruitment
 //Add
@@ -111,7 +109,7 @@ server.get("/recruit", async (req, res) => {
 // Get most recent applicants
 server.get("/recent-applicants", async (req, res) => {
     try {
-      const recentApplicants = await recruit.find().sort({ _id: -1 }).limit(7); // Sort by _id in descending order and limit to 4
+      const recentApplicants = await recruit.find().sort({ _id: -1 }).limit(7);
       res.json(recentApplicants);
     } catch (error) {
       console.error("Error fetching recent applicants:", error);
@@ -234,44 +232,72 @@ server.get("/employee", async (req, res) => {
 });
 
 //Edit
-server.put("employee/:id", employeeUpload.single('picture'), async (req, res) => {
-    try{
-        const { id } = req.params
-        const { name, position, bday, gender, address, email, contact, team, absences, presents, socials1, socials2, socials3, employeedSince, salary, ID } = req.body;
-        const picturePath = req.file ? getEmployeeRelativePath(req.file.path) : null;
+server.put("/employee/:id", employeeUpload.single('picture'), async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, profession, bday, gender, address, email, contact, team, absences, presents, socials1, socials2, socials3, employeedSince, salary, ID } = req.body;
+        const picture = req.file; 
 
-        const employee = await Employee.findById(id);
+        
+        const picturePath = picture ? getRelativePath(picture.path) : req.body.employeeImage;
 
-        if (!employee) {
+        
+        const updatedEmployee = await employee.findByIdAndUpdate(id, {
+            employeeID: ID,
+            employeeFullName: name,
+            employeeProfession: profession,
+            employeeDateofBirth: bday,
+            employeeAddress: address,
+            employeeGender: gender,
+            employeeEmail: email,
+            employeeContactInfo: contact,
+            employeeTeam: team,
+            employeeAbsences: absences,
+            employeePresents: presents,
+            employeeSocialLink1: socials1,
+            employeeSocialLink2: socials2,
+            employeeSocialLink3: socials3,
+            dateStarted: employeedSince,
+            employeeSalary: salary,
+            employeeImage: picturePath
+        }, { new: true });
+
+        if (!updatedEmployee) {
             return res.status(404).json({ message: "Employee not found" });
         }
 
-        employee.name = name;
-        employee.position = position;
-        employee.bday = bday;
-        employee.gender = gender;
-        employee.address = address;
-        employee.email = email;
-        employee.contact = contact;
-        employee.team = team;
-        employee.absences = absences;
-        employee.presents = presents;
-        employee.socials1 = socials1;
-        employee.socials2 = socials2;
-        employee.socials3 = socials3;
-        employee.employeedSince = employeedSince;
-        employee.salary = salary;
-        employee.ID = ID;
-        if (picturePath) {
-            employee.picturePath = picturePath;
+        res.status(200).json(updatedEmployee);
+    } catch (error) {
+        console.error("Error updating employee:", error);
+        res.status(500).json({ message: error.message });
+    }
+});
+
+server.delete('/employee/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Find the employee by ID
+        const employeeToDelete = await employee.findById(id);
+
+        if (!employeeToDelete) {
+            return res.status(404).json({ message: "Employee not found" });
         }
 
-        await employee.save();
+        // Get the path of the associated image file
+        const imagePath = path.join(__dirname, '../public', employeeToDelete.employeeImage);
 
-        res.status(200).json({ message: "Employee updated successfully" });
+        // Delete the image file from the filesystem
+        fs.unlinkSync(imagePath);
+        console.log("Image file deleted successfully");
 
+        // Delete the employee record from the database
+        await employee.findByIdAndDelete(id);
+        console.log("Employee deleted successfully from the database");
+
+        return res.status(200).json({ message: "Employee deleted successfully" });
     } catch (error) {
-        console.error("Error updating recruit:", error);
-        res.status(500).json({ message: error.message });
+        console.error("Error deleting employee:", error);
+        return res.status(500).json({ message: error.message });
     }
 });

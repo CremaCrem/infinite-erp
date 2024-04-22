@@ -4,13 +4,14 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import EmployeeDetails from './EmployeeDetails';
+import AddEmployee from './AddEmployee';
 
 const EmployeeBox = () => {
   const [employees, setEmployees] = useState([]);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [showEmployeeDetails, setShowEmployeeDetails] = useState(false);
+  const [isAdding, setIsAdding] = useState(false)
 
-  // Reference for the modal div
   const modalRef = useRef(null);
 
   useEffect(() => {
@@ -45,23 +46,30 @@ const EmployeeBox = () => {
   };
 
   const handleCloseModal = () => {
-    setSelectedEmployee(null); // Reset selected employee
-    setShowEmployeeDetails(false); // Close the modal overlay
+    setSelectedEmployee(null); 
+    setShowEmployeeDetails(false); 
   };
 
+  const handleAddClick = () => {
+    setIsAdding(true)
+  }
+  const handleCloseAddModal = () => {
+    setIsAdding(false)
+  }
+
   return (
-    <div className='h-[450px] w-[1480px] bg-white mr-5 mt-[23px] rounded-[20px]' onClick={handleCloseModal}>
+    <div className='h-[750px] w-[1480px] bg-white mr-5 mt-[23px] rounded-[20px] overflow-y-auto' onClick={handleCloseModal}>
       <div className='pr-5 pl-6' ref={modalRef}>
         <div className='text-LightBlue font-Montserrat flex justify-between pt-3 mr-[10px]'>
           <div className='text-lg font-bold' style={{ width: '20.5%' }}>Full Name</div>
-          <div className='text-lg font-bold' style={{ width: '10%' }}>Profession</div>
+          <div className='text-lg font-bold' style={{ width: '20%' }}>Profession</div>
           <div className='text-lg font-bold' style={{ width: '20%' }}>Contact Info</div>
         </div>
         {/* Display employee data */}
         {employees.map((employee, index) => (
           <div key={index} className='flex justify-between pt-2 text-lg font-Montserrat'>
             <div style={{ width: '20%' }}>{employee.employeeFullName}</div>
-            <div style={{ width: '10%' }}>{employee.employeeProfession}</div>
+            <div style={{ width: '20%' }}>{employee.employeeProfession}</div>
             <div className='flex h-10' style={{ width: '20%' }}>
               {/* Email logo */}
               <span onClick={() => copyToClipboard(employee.employeeEmail, 'Email')}>
@@ -78,11 +86,11 @@ const EmployeeBox = () => {
               {/* See All button */}
               <button
                 onClick={(e) => {
-                  e.stopPropagation(); // Prevent event propagation
-                  toggleEmployeeDetails(employee);
+                  e.stopPropagation();
+                  toggleEmployeeDetails({ ...employee, _id: employee._id });
                 }}
-                className="ml-3 bg-gray-300 text-gray-700 px-2 py-1 rounded-md"
-              >
+                className="ml-3 bg-NeonGreen text-white text-medium text-lg h-[80%] w-[30%] font-Lato px-2 rounded-lg 
+                hover:bg-Goldy transition-all duration-200 hover:rounded-xl">
                 See All
               </button>
             </div>
@@ -95,8 +103,21 @@ const EmployeeBox = () => {
           <EmployeeDetails employee={selectedEmployee} onClose={handleCloseModal} />
         </div>
       }
-
       <ToastContainer/>
+      <div className='flex justify-end mr-[3.9%] mt-[10px]'>
+          <button
+            onClick={handleAddClick}
+            className="ml-3 bg-NeonGreen text-white text-medium text-lg h-[80%] w-[6%] font-Lato px-2 rounded-lg 
+                hover:bg-Goldy transition-all duration-200 hover:rounded-xl">
+            Add
+          </button>
+      </div>
+       {/* AddEmployee Modal */}
+       {isAdding &&
+        <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-70 z-20' onClick={handleCloseAddModal}>
+          <AddEmployee onClose={() => handleCloseAddModal} />
+        </div>
+      }
     </div>
   );
 };

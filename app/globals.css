@@ -62,3 +62,15 @@ body {
   position: relative;
   left: 10px;
 }
+
+.portalBackground {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(circle, #3A506B, #1C2541, #0B132B);
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: multiply;
+}
