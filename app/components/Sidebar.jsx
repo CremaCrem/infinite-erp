@@ -11,23 +11,23 @@ const Sidebar = () => {
         </div>
         <ul className='mt-8'>
             <li className='mb-2 py-2'>
-                <Link href='/dashboard' className='mb-5 ml-8 px-3 flex justify-left text-white text-xl font-Lato'>
+                <Link href='/dashboard' className='mb-8 ml-8 px-3 flex justify-left text-white text-xl font-Lato'>
                     <img src="/icons/carbon_notebook.svg" alt='Dashboard Icon' className='inline-block mr-2'></img>
                     Dashboard
                 </Link>
-                <Link href='/recruitment' className='mb-5 ml-8 px-3 flex justify-left text-white text-xl font-Lato'>
+                <Link href='/recruitment' className='mb-8 ml-8 px-3 flex justify-left text-white text-xl font-Lato'>
                     <img src="/icons/carbon_category.svg" alt='Recruitment Icon' className='inline-block mr-2'></img>
                     Recruitment
                 </Link>
-                <Link href='/employee-record' className='mb-5 ml-8 px-3 flex justify-left text-white text-xl font-Lato'>
+                <Link href='/employee-record' className='mb-8 ml-8 px-3 flex justify-left text-white text-xl font-Lato'>
                     <img src="/icons/carbon_user-profile.svg" alt='Employee Record Icon' className='inline-block mr-2'></img>
                     Employee Record
                 </Link>
-                <a href='/relations' className='mb-5 ml-8 px-3 flex justify-left text-white text-xl font-Lato'>
+                <a href='/relations' className='mb-8 ml-8 px-3 flex justify-left text-white text-xl font-Lato'>
                     <img src="/icons/carbon_airline-passenger-care.svg" alt='Relations Icon' className='inline-block mr-2'></img>
                     Relations
                 </a>
-                <a href='' className='mb-5 ml-8 px-3 flex justify-left text-white text-xl font-Lato'>
+                <a href='/training' className='mb-8 ml-8 px-3 flex justify-left text-white text-xl font-Lato'>
                     <img src="/icons/carbon_carbon-for-ibm-product.svg" alt='Training Icon' className='inline-block mr-2'></img>
                     Training
                 </a>

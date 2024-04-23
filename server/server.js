@@ -60,8 +60,12 @@ server.listen(5000, ()=>{
 //Schema Import
 require("./models/recruitmentdetails")
 require("./models/employeedetails")
+require("./models/relationdetails")
+
+//Model
 const recruit = mongoose.model("RecruitInfo")
 const employee =mongoose.model("EmployeeInfo")
+const complaints = mongoose.model("Complaints")
 
 function getRelativePath(absolutePath) {
     const rootDir = path.join(__dirname, '../public');
@@ -276,22 +280,19 @@ server.put("/employee/:id", employeeUpload.single('picture'), async (req, res) =
 server.delete('/employee/:id', async (req, res) => {
     try {
         const { id } = req.params;
-
-        // Find the employee by ID
         const employeeToDelete = await employee.findById(id);
 
         if (!employeeToDelete) {
             return res.status(404).json({ message: "Employee not found" });
         }
 
-        // Get the path of the associated image file
         const imagePath = path.join(__dirname, '../public', employeeToDelete.employeeImage);
 
-        // Delete the image file from the filesystem
+
         fs.unlinkSync(imagePath);
         console.log("Image file deleted successfully");
 
-        // Delete the employee record from the database
+
         await employee.findByIdAndDelete(id);
         console.log("Employee deleted successfully from the database");
 
@@ -301,3 +302,58 @@ server.delete('/employee/:id', async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 });
+//End of Employee
+
+//Complaints
+//Add
+server.post("/relations", async (req, res) => {
+    const { subject, description, reporter, date } = req.body;
+    try {
+        const newComplaint = await complaints.create({
+            subject,
+            description,
+            date,
+            status: 'Open',
+            reporter,
+        });
+        res.status(201).json(newComplaint);
+    } catch (error) {
+        console.error("Error adding complaint:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+//Get
+server.get("/relations", async (req, res) => {
+    try {
+        const allComplaints = await complaints.find();
+        res.status(200).json(allComplaints);
+    } catch (error) {
+        console.error("Error fetching complaints:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+// Put
+server.put('/relations/:id', async (req, res) => {
+    const { id } = req.params; 
+    const { subject, description, date, status, reporter } = req.body; 
+  
+    try {
+      const updatedComplaint = await complaints.findByIdAndUpdate(
+        id,
+        { subject, description, date, status, reporter },
+        { new: true }
+      );
+  
+      if (!updatedComplaint) {
+        return res.status(404).json({ error: 'Complaint not found' });
+      }
+  
+      // Return the updated complaint as the response
+      res.json(updatedComplaint);
+    } catch (error) {
+      console.error('Error updating complaint:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });

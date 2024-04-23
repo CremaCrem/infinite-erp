@@ -1,10 +1,13 @@
 import React from 'react'
-import AddEmployee from './AddEmployee'
+import Navbar from './Navbar'
+import RelationsBox from './RelationsBox'
 
 const EmployeeRelationsPage = () => {
+  const pageTitle = 'Relations'
   return (
     <div className='w-full flex flex-col h-screen'>
-        <AddEmployee/>
+        <Navbar pageTitle={pageTitle}/>
+        <RelationsBox/>
     </div>
   )
 }
