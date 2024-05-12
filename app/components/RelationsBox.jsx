@@ -46,7 +46,7 @@ const RelationsBox = () => {
 
   return (
     <div>
-        <div className='h-[350px] w-[1480px] bg-white mr-5 mt-[23px] ml-[17%] rounded-[20px] overflow-y-auto'>
+        <div className='h-[350px] w-[1480px] bg-white mr-5 mt-[23px] ml-[17%] rounded-l-[20px] overflow-y-scroll scrollbar'>
             <div className='pr-5 pl-5 pt-3 text-LightBlue text-2xl font-Montserrat font-bold'>
                 <h1>Complaints and Feedback</h1>
             </div>

@@ -61,11 +61,13 @@ server.listen(5000, ()=>{
 require("./models/recruitmentdetails")
 require("./models/employeedetails")
 require("./models/relationdetails")
+require("./models/providedCourses")
 
 //Model
 const recruit = mongoose.model("RecruitInfo")
-const employee =mongoose.model("EmployeeInfo")
+const employee = mongoose.model("EmployeeInfo")
 const complaints = mongoose.model("Complaints")
+const programs = mongoose.model("TrainingProgram")
 
 function getRelativePath(absolutePath) {
     const rootDir = path.join(__dirname, '../public');
@@ -357,3 +359,100 @@ server.put('/relations/:id', async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
   });
+// End of Complaints
+
+// Training
+// Add
+server.post("/training-programs", async (req, res) => {
+    try {
+        const { name, description, enrolledEmployees } = req.body;
+
+        const trainingProgram = new programs({
+            name,
+            description,
+            enrolledEmployees: enrolledEmployees || [] 
+        });
+
+        await trainingProgram.save();
+
+        res.status(201).json(trainingProgram);
+    } catch (error) {
+        console.error("Error creating training program:", error);
+        res.status(500).json({ error: "An error occurred while creating the training program" });
+    }
+});
+
+server.post('/training-programs/enroll', async (req, res) => {
+    try {
+        const { program, employee } = req.body;
+        const newProgram = new programs({ name: program, enrolledEmployees: [employee] });
+
+        await newProgram.save();
+
+        res.status(201).send("Enrollment successful");
+    } catch (error) {
+        console.error('Error enrolling employee:', error);
+        res.status(500).send("Error enrolling employee");
+    }
+});
+
+
+  
+// Get training programs
+server.get("/training-programs", async (req, res) => {
+    try {
+        const trainingPrograms = await programs.find().populate('enrolledEmployees');
+        
+        res.status(200).json(trainingPrograms);
+    } catch (error) {
+        console.error("Error fetching training programs:", error);
+        res.status(500).json({ error: "An error occurred while fetching training programs" });
+    }
+});
+
+// Get enrolled employees for a specific training program
+server.get("/training-programs/:programId/enrolled-employees", async (req, res) => {
+    try {
+        const { programId } = req.params;
+        const trainingProgram = await programs.findById(programId).populate('enrolledEmployees');
+        if (!trainingProgram) {
+            return res.status(404).json({ error: "Training program not found" });
+        }
+        const enrolledEmployees = trainingProgram.enrolledEmployees;
+        res.status(200).json(enrolledEmployees);
+    } catch (error) {
+        console.error(`Error fetching enrolled employees for program ${programId}:`, error);
+        res.status(500).json({ error: "An error occurred while fetching enrolled employees" });
+    }
+});
+
+// Delete All Instance of a Program
+server.delete("/training-programs/:name", async (req, res) => {
+    try {
+        const { name } = req.params;
+        const deletedPrograms = await programs.deleteMany({ name });
+        if (deletedPrograms.deletedCount === 0) {
+            return res.status(404).json({ error: "Training programs not found" });
+        }
+        res.status(200).json(deletedPrograms);
+    } catch (error) {
+        console.error("Error deleting training programs:", error);
+        res.status(500).json({ error: "An error occurred while deleting the training programs" });
+    }
+});
+
+// Delete training program by ID
+server.delete("/training-programs-id/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        console.log("Received object ID:", id);
+        const deletedProgram = await programs.findByIdAndDelete(id);
+        if (!deletedProgram) {
+            return res.status(404).json({ error: `Training program with ID ${id} not found` });
+        }
+        res.status(200).json(deletedProgram);
+    } catch (error) {
+        console.error("Error deleting training program:", error);
+        res.status(500).json({ error: "An error occurred while deleting the training program" });
+    }
+});

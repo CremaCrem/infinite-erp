@@ -94,7 +94,7 @@ const RecruitmentBox = () => {
             <div className='text-lg font-bold' style={{ width: '20%' }}>Status</div>
           </div>
           {recruitmentData.map((data, index) => (
-            <div key={index} className='text-LightBlue font-Montserrat flex justify-between pt-3 mr-[100px]' onMouseLeave={() => setHoverIndex(null)}>
+            <div key={index} className='text-LightBlue font-Montserrat flex justify-between pt-3 mr-[100px] cursor-pointer hover:text-Goldy hover:font-bold transition-all ease-in' onMouseLeave={() => setHoverIndex(null)}>
               <div style={{ width: '30%', position: 'relative' }} onClick={() => handleRecruitClick(index)}>
                 {data.recruitFullName}
                 <img 

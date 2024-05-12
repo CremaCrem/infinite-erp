@@ -1,5 +1,5 @@
 'use client';
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
@@ -48,20 +48,58 @@ function renderEventContent(eventInfo) {
     background-color: #E1B07E;
     font-family: 'Lato', sans-serif;
   }
+  .fc-addEvent-button {
+    background-color: #53DD6C; /* Set background color */
+    color: white; /* Set text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Set border radius */
+    padding: 8px 16px; /* Add padding */
+    margin-left: 5px; /* Adjust left margin */
+    cursor: pointer; /* Set cursor */
+    font-family: 'Montserrat', sans-serif; /* Set font family */
+    font-weight: bold; /* Set font weight */
+    font-size: 20px; /* Set font size */
+  }
 `
 
-const Calendar = () => {
-  return (
-      <StyleWrapper className='flex justify-end mr-[80px] mt-5 mb-6'>
-        <FullCalendar
-            plugins={[dayGridPlugin, interactionPlugin]}
-            initialView='dayGridMonth'
-            weekends={true}
-            events={events}
-            eventContent={renderEventContent}
-        /> 
-      </StyleWrapper>
-  )
-}
+const Calendar = ({ events }) => {
+  const [calendarEvents, setCalendarEvents] = useState(events || [])
 
-export default Calendar
+  const handleAddEvent = (title, startDate) => {
+    const newEvent = {
+      title: title || 'New Event', 
+      start: startDate || new Date(), 
+      allDay: true
+    };
+    setCalendarEvents([...calendarEvents, newEvent]);
+  };
+
+  useEffect(() => {
+    handleAddEvent('Birthday Party', new Date(2024, 4, 25));
+  }, []);
+
+  return (
+    <StyleWrapper className='flex justify-end mr-[80px] mt-5 mb-6'>
+      <FullCalendar
+        plugins={[dayGridPlugin, interactionPlugin]}
+        initialView='dayGridMonth'
+        weekends={true}
+        events={calendarEvents}
+        eventContent={renderEventContent}
+        customButtons={{
+          addEventButton: {
+            text: 'Add Event',
+            click: handleAddEvent
+          }
+        }}
+        headerToolbar={{
+          start: 'title',
+          center: 'addEventButton',
+          end: 'prev,next'
+        }}
+      />
+    </StyleWrapper>
+  );
+};
+
+export default Calendar;

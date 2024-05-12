@@ -49,7 +49,6 @@ const EmployeeDetails = ({ employee, onClose }) => {
   const confirmDelete = async () => {
     try {
       const response = await axios.delete(`http://localhost:5000/employee/${employee._id}`);
-      console.log('Recruit deleted successfully:', response.data)
       toast.success('Recruit successfully deleted!', {
         position: 'top-center',
         autoClose: 800,
