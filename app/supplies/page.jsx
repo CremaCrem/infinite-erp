@@ -1,9 +1,15 @@
 import React from 'react'
-import Hero from '../components/Hero'
+import SuppliesHero from '../components/SuppliesHero'
+import SuppliesSideBar from '../components/SuppliesSideBar'
 
 const SuppliesPageHero = () => {
+  const pageTitle = 'Supplies'
   return (
-    <div><Hero/></div>
+    
+    <div className='flex'>
+      <SuppliesHero/>
+      <SuppliesSideBar/>
+    </div>
   )
 }
 

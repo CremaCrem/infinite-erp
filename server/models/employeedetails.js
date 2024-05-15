@@ -1,7 +1,11 @@
 const mongoose = require("mongoose")
+const { unique } = require("next/dist/build/utils")
 
 const employeeDetailsSchema = new mongoose.Schema({
-    employeeID: String,
+    employeeID: {
+        type: String,
+        unique: true
+    },
     employeeFullName: String,
     employeeGender: String,
     employeeDateofBirth: Date,

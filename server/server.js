@@ -58,6 +58,7 @@ server.listen(5000, ()=>{
 })
 
 //Schema Import
+const { Product, Sale } = require("./models/productdetails");
 require("./models/recruitmentdetails")
 require("./models/employeedetails")
 require("./models/relationdetails")
@@ -81,8 +82,9 @@ function getEmployeeRelativePath(absolutePath) {
     return relativePath;
 }
 
+// Human Resources
 // Recruitment
-//Add
+// Add
 server.post("/recruit", upload.fields([{ name: 'file' }, { name: 'picture' }]), async(req, res) =>{
     const { name, position, status, contact } = req.body;
     const { file, picture } = req.files;
@@ -382,6 +384,7 @@ server.post("/training-programs", async (req, res) => {
     }
 });
 
+// Enrolling Employee to a Program
 server.post('/training-programs/enroll', async (req, res) => {
     try {
         const { program, employee } = req.body;
@@ -396,8 +399,6 @@ server.post('/training-programs/enroll', async (req, res) => {
     }
 });
 
-
-  
 // Get training programs
 server.get("/training-programs", async (req, res) => {
     try {
@@ -454,5 +455,115 @@ server.delete("/training-programs-id/:id", async (req, res) => {
     } catch (error) {
         console.error("Error deleting training program:", error);
         res.status(500).json({ error: "An error occurred while deleting the training program" });
+    }
+});
+// End of Training
+
+// End of Human Resources
+
+// Start of Supplies
+// Add
+server.post('/products', async (req, res) => {
+    try {
+      const product = new Product(req.body);
+      await product.save();
+      res.status(201).json(product);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  });
+
+server.post('/sales', async (req, res) => {
+    try {
+      const { product, quantitySold } = req.body;
+  
+      const productDetails = await Product.findById(product);
+  
+      if (!productDetails) {
+        return res.status(404).json({ error: 'Product not found' });
+      }
+  
+      const totalPrice = productDetails.price * quantitySold;
+  
+      const sale = new Sale({
+        product,
+        quantitySold,
+        totalPrice
+      });
+  
+      await sale.save();
+  
+      res.status(201).json({ message: 'Sale created successfully', sale });
+    } catch (error) {
+      console.error('Error creating sale:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+  
+server.get('/categories', async (req, res) => {
+    try {
+        const categories = await Product.distinct('productCategory');
+        res.json(categories);
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+server.get('/brands', async (req, res) => {
+    try {
+        const brands = await Product.distinct('brandName');
+        res.json(brands);
+    } catch (error) {
+        console.error('Error fetching brands:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// GET Products
+server.get('/products', async (req, res) => {
+    try {
+        const products = await Product.find();
+        res.json(products);
+    } catch (error) {
+        console.error('Error fetching products:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// GET Sales
+server.get('/sales', async (req, res) => {
+    try {
+        const sales = await Sale.find().populate('product');
+        res.json(sales);
+    } catch (error) {
+        console.error('Error fetching sales:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// GET Sales by Product ID
+server.get('/sales/productID', async (req, res) => {
+    try {
+        const { product } = req.query;
+        const sales = await Sale.find({ product }).populate('product');
+        res.json(sales);
+    } catch (error) {
+        console.error('Error fetching sales:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// GET for Search
+server.get('/search', async (req, res) => {
+    const { query } = req.query;
+    try {
+        const products = await Product.find({
+            productName: { $regex: query, $options: 'i' }
+        });
+        res.json(products);
+    } catch (error) {
+        console.error('Error searching products:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
