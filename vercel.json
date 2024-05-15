@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "name": "infinite=sia",
+  "builds": [
+    {
+      "src": "app/next.config.js",
+      "use": "@vercel/next"
+    },
+    {
+      "src": "server/server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/server/server.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/app/$1"
+    }
+  ],
+  "env": {
+    "NEXT_PUBLIC_BACKEND_URL": "/api",
+    "MONGO_URL": "mongodb+srv://j3remyz1on:Pm12duvQmpReJgb6@cluster0.0sqyiib.mongodb.net/hr-sia-database"
+  }
+}

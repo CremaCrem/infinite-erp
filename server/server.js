@@ -92,7 +92,7 @@ function getEmployeeRelativePath(absolutePath) {
 // Human Resources
 // Recruitment
 // Add
-server.post("/recruit", upload.fields([{ name: 'file' }, { name: 'picture' }]), async(req, res) =>{
+server.post("/api/recruit", upload.fields([{ name: 'file' }, { name: 'picture' }]), async(req, res) =>{
     const { name, position, status, contact } = req.body;
     const { file, picture } = req.files;
     try{
@@ -111,7 +111,7 @@ server.post("/recruit", upload.fields([{ name: 'file' }, { name: 'picture' }]), 
 })
 
 // Get
-server.get("/recruit", async (req, res) => {
+server.get("/api/recruit", async (req, res) => {
     try {
       const recruitmentData = await recruit.find();
       res.json(recruitmentData)
@@ -122,7 +122,7 @@ server.get("/recruit", async (req, res) => {
   });
 
 // Get most recent applicants
-server.get("/recent-applicants", async (req, res) => {
+server.get("/api/recent-applicants", async (req, res) => {
     try {
       const recentApplicants = await recruit.find().sort({ _id: -1 }).limit(7);
       res.json(recentApplicants);
@@ -133,7 +133,7 @@ server.get("/recent-applicants", async (req, res) => {
   });
 
   //Update
-  server.put('/recruit/:id', upload.fields([{ name: 'file' }, { name: 'picture' }]), async (req, res) => {
+  server.put('/api/recruit/:id', upload.fields([{ name: 'file' }, { name: 'picture' }]), async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -167,7 +167,7 @@ server.get("/recent-applicants", async (req, res) => {
 })
 
 // Delete
-server.delete('/recruit/:id', async (req, res) => {
+server.delete('/api/recruit/:id', async (req, res) => {
     try {
         const { id } = req.params
 
@@ -204,7 +204,7 @@ server.delete('/recruit/:id', async (req, res) => {
 
 //Employee Record
 //Add
-server.post("/employee", employeeUpload.single('picture'), async (req, res) => {
+server.post("/api/employee", employeeUpload.single('picture'), async (req, res) => {
     const { name, position, bday, gender, address, email, contact, team, absences, presents, socials1, socials2, socials3, employeedSince, salary, ID } = req.body;
     const picturePath = req.file ? getEmployeeRelativePath(req.file.path) : null;
 
@@ -236,7 +236,7 @@ server.post("/employee", employeeUpload.single('picture'), async (req, res) => {
 });
 
 //Get
-server.get("/employee", async (req, res) => {
+server.get("/api/employee", async (req, res) => {
     try {
         const employeesData = await employee.find();
         res.json(employeesData);
@@ -247,7 +247,7 @@ server.get("/employee", async (req, res) => {
 });
 
 //Edit
-server.put("/employee/:id", employeeUpload.single('picture'), async (req, res) => {
+server.put("/api/employee/:id", employeeUpload.single('picture'), async (req, res) => {
     try {
         const { id } = req.params;
         const { name, profession, bday, gender, address, email, contact, team, absences, presents, socials1, socials2, socials3, employeedSince, salary, ID } = req.body;
@@ -288,7 +288,7 @@ server.put("/employee/:id", employeeUpload.single('picture'), async (req, res) =
     }
 });
 
-server.delete('/employee/:id', async (req, res) => {
+server.delete('/api/employee/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const employeeToDelete = await employee.findById(id);
@@ -317,7 +317,7 @@ server.delete('/employee/:id', async (req, res) => {
 
 //Complaints
 //Add
-server.post("/relations", async (req, res) => {
+server.post("/api/relations", async (req, res) => {
     const { subject, description, reporter, date } = req.body;
     try {
         const newComplaint = await complaints.create({
@@ -335,7 +335,7 @@ server.post("/relations", async (req, res) => {
 });
 
 //Get
-server.get("/relations", async (req, res) => {
+server.get("/api/relations", async (req, res) => {
     try {
         const allComplaints = await complaints.find();
         res.status(200).json(allComplaints);
@@ -346,7 +346,7 @@ server.get("/relations", async (req, res) => {
 });
 
 // Put
-server.put('/relations/:id', async (req, res) => {
+server.put('/api/relations/:id', async (req, res) => {
     const { id } = req.params; 
     const { subject, description, date, status, reporter } = req.body; 
   
@@ -372,7 +372,7 @@ server.put('/relations/:id', async (req, res) => {
 
 // Training
 // Add
-server.post("/training-programs", async (req, res) => {
+server.post("/api/training-programs", async (req, res) => {
     try {
         const { name, description, enrolledEmployees } = req.body;
 
@@ -392,7 +392,7 @@ server.post("/training-programs", async (req, res) => {
 });
 
 // Enrolling Employee to a Program
-server.post('/training-programs/enroll', async (req, res) => {
+server.post('/api/training-programs/enroll', async (req, res) => {
     try {
         const { program, employee } = req.body;
         const newProgram = new programs({ name: program, enrolledEmployees: [employee] });
@@ -407,7 +407,7 @@ server.post('/training-programs/enroll', async (req, res) => {
 });
 
 // Get training programs
-server.get("/training-programs", async (req, res) => {
+server.get("/api/training-programs", async (req, res) => {
     try {
         const trainingPrograms = await programs.find().populate('enrolledEmployees');
         
@@ -419,7 +419,7 @@ server.get("/training-programs", async (req, res) => {
 });
 
 // Get enrolled employees for a specific training program
-server.get("/training-programs/:programId/enrolled-employees", async (req, res) => {
+server.get("/api/training-programs/:programId/enrolled-employees", async (req, res) => {
     try {
         const { programId } = req.params;
         const trainingProgram = await programs.findById(programId).populate('enrolledEmployees');
@@ -435,7 +435,7 @@ server.get("/training-programs/:programId/enrolled-employees", async (req, res) 
 });
 
 // Delete All Instance of a Program
-server.delete("/training-programs/:name", async (req, res) => {
+server.delete("/api/training-programs/:name", async (req, res) => {
     try {
         const { name } = req.params;
         const deletedPrograms = await programs.deleteMany({ name });
@@ -450,7 +450,7 @@ server.delete("/training-programs/:name", async (req, res) => {
 });
 
 // Delete training program by ID
-server.delete("/training-programs-id/:id", async (req, res) => {
+server.delete("/api/training-programs-id/:id", async (req, res) => {
     try {
         const { id } = req.params;
         console.log("Received object ID:", id);
@@ -470,7 +470,7 @@ server.delete("/training-programs-id/:id", async (req, res) => {
 
 // Start of Supplies
 // Add
-server.post('/products', async (req, res) => {
+server.post('/api/products', async (req, res) => {
     try {
       const product = new Product(req.body);
       await product.save();
@@ -480,7 +480,7 @@ server.post('/products', async (req, res) => {
     }
   });
 
-server.post('/sales', async (req, res) => {
+server.post('/api/sales', async (req, res) => {
     try {
       const { product, quantitySold } = req.body;
   
@@ -507,7 +507,7 @@ server.post('/sales', async (req, res) => {
     }
   });
   
-server.get('/categories', async (req, res) => {
+server.get('/api/categories', async (req, res) => {
     try {
         const categories = await Product.distinct('productCategory');
         res.json(categories);
@@ -517,7 +517,7 @@ server.get('/categories', async (req, res) => {
     }
 });
 
-server.get('/brands', async (req, res) => {
+server.get('/api/brands', async (req, res) => {
     try {
         const brands = await Product.distinct('brandName');
         res.json(brands);
@@ -528,7 +528,7 @@ server.get('/brands', async (req, res) => {
 });
 
 // GET Products
-server.get('/products', async (req, res) => {
+server.get('/api/products', async (req, res) => {
     try {
         const products = await Product.find();
         res.json(products);
@@ -539,7 +539,7 @@ server.get('/products', async (req, res) => {
 });
 
 // GET Sales
-server.get('/sales', async (req, res) => {
+server.get('/api/sales', async (req, res) => {
     try {
         const sales = await Sale.find().populate('product');
         res.json(sales);
@@ -550,7 +550,7 @@ server.get('/sales', async (req, res) => {
 });
 
 // GET Sales by Product ID
-server.get('/sales/productID', async (req, res) => {
+server.get('/api/sales/productID', async (req, res) => {
     try {
         const { product } = req.query;
         const sales = await Sale.find({ product }).populate('product');
@@ -562,7 +562,7 @@ server.get('/sales/productID', async (req, res) => {
 });
 
 // GET for Search
-server.get('/search', async (req, res) => {
+server.get('/api/search', async (req, res) => {
     const { query } = req.query;
     try {
         const products = await Product.find({
