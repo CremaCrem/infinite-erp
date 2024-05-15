@@ -17,7 +17,7 @@ const SuppliesSideBar = () => {
 
         if (query.trim()) {
             try {
-                const response = await axios.get(`http://localhost:5000/search?query=${query}`);
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/search?query=${query}`);
                 setSearchResults(response.data);
             } catch (error) {
                 console.error('Error fetching search results:', error);
@@ -32,7 +32,7 @@ const SuppliesSideBar = () => {
         setSearchQuery('');
         setSearchResults([]);
         try {
-            const response = await axios.get(`http://localhost:5000/sales/productID?product=${item._id}`);
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/sales/productID?product=${item._id}`);
             setSalesData(response.data);
         } catch (error) {
             console.error('Error fetching sales data:', error);

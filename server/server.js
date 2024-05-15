@@ -9,7 +9,10 @@ const mongoURL = process.env.MONGO_URL;
 const path = require('path')
 const fs = require('fs')
 
-server.use(cors())
+server.use(cors({
+    origin: 'https://infinite-erp.vercel.app'
+}));
+
 
 //Mongodb Connection
 mongoose.connect(mongoURL, {
@@ -54,9 +57,10 @@ const employeeUpload = multer({
 })
 
 //Check Connection
-server.listen(5000, ()=>{
-    console.log("Server Started")
-})
+const PORT = process.env.PORT || 5000;
+server.listen(PORT, () => {
+  console.log(`Server Started on port ${PORT}`);
+});
 
 //Schema Import
 const { Product, Sale } = require("./models/productdetails");

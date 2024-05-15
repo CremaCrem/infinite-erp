@@ -59,7 +59,7 @@ const AddEmployee = ({ onClose }) => {
         formData.append('picture', picture);
 
         try {
-            const result = await axios.post("http://localhost:5000/employee", formData);
+            const result = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/employee`, formData);
             console.log('Employee added successfully:', result.data);
             toast.success('Recruit successfully added!',{
                 position: 'top-center',

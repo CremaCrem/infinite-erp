@@ -8,7 +8,7 @@ const RecruitmentPreviewBox = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/recruit');
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/recruit`);
         console.log(response.data)
         setRecruitmentData(response.data);
       } catch (error) {

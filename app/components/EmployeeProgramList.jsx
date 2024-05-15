@@ -24,7 +24,7 @@ const EmployeeProgramList = ({ program, enrolledEmployees }) => {
   const handleConfirmDelete = async () => {
     try {
       console.log(program._id);
-      await axios.delete(`http://localhost:5000/training-programs-id/${program._id}`);
+      await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/training-programs-id/${program._id}`);
       toast.success('Employee successfully deleted!', {
         position: 'top-center',
         autoClose: 800,

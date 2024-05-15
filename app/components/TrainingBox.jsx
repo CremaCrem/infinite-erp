@@ -22,7 +22,7 @@ const TrainingBox = () => {
   const [enrollModalOpen, setEnrollModalOpen] = useState(false);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/training-programs')
+    axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/training-programs`)
       .then(response => {
         setTrainingPrograms(response.data);
       })
@@ -32,7 +32,7 @@ const TrainingBox = () => {
   }, []);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/employee')
+    axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/employee`)
       .then(response => {
         setEmployees(response.data);
       })
@@ -43,11 +43,11 @@ const TrainingBox = () => {
   
   // Fetch Employee and Program
   useEffect(() => {
-    axios.get('http://localhost:5000/training-programs')
+    axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/training-programs`)
       .then(response => {
         setTrainingPrograms(response.data);
         response.data.forEach(program => {
-          axios.get(`http://localhost:5000/training-programs/${program._id}/enrolled-employees`)
+          axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/training-programs/${program._id}/enrolled-employees`)
             .then(response => {
               setEnrolledEmployees(prevState => ({
                 ...prevState,
@@ -71,7 +71,7 @@ const TrainingBox = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/training-programs', formData);
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/training-programs`, formData);
       setTrainingPrograms([...trainingPrograms, response.data]);
       setModalOpen(false);
       setFormData({ name: '', description: '' });
@@ -91,7 +91,7 @@ const TrainingBox = () => {
     if (selectedProgram) {
       try {
         const encodedProgramName = encodeURIComponent(selectedProgram);
-        await axios.delete(`http://localhost:5000/training-programs/${encodedProgramName}`);
+        await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/training-programs/${encodedProgramName}`);
         setTrainingPrograms(trainingPrograms.filter(program => program.name !== selectedProgram));
         toast.success('Program successfully added!', {
           position: 'top-center',

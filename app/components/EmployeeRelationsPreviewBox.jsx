@@ -8,7 +8,7 @@ const EmployeeRelationsPreviewBox = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/relations');
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/relations`);
         setEmployeeRelationsData(response.data);
       } catch (error) {
         console.error('Error fetching employee relations data:', error);

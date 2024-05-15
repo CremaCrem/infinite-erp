@@ -21,7 +21,7 @@ const RecruitmentBox = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/recruit')
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/recruit`)
         setRecruitmentData(response.data); 
       } catch (error) {
         console.error('Error fetching recruitment data:', error)
@@ -57,7 +57,7 @@ const RecruitmentBox = () => {
 
   const confirmDelete = async () => {
     try {
-      const response = await axios.delete(`http://localhost:5000/recruit/${selectedRecruit._id}`)
+      const response = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/recruit/${selectedRecruit._id}`)
       console.log('Recruit deleted successfully:', response.data)
       toast.success('Recruit successfully deleted!', {
         position: 'top-center',

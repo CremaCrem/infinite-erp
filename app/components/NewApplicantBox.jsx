@@ -10,7 +10,7 @@ const NewApplicantBox = () => {
   useEffect(() => {
     const fetchRecentApplicants = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/recent-applicants');
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/recent-applicants`);
         setApplicants(response.data.slice(0, MAX_APPLICANTS)); // Limit to MAX_APPLICANTS
       } catch (error) {
         console.error('Error fetching recent applicants:', error);

@@ -14,7 +14,7 @@ const EnrollEmployeeModal = ({ programs, employees, isOpen, onClose }) => {
 
   const handleEnroll = async () => {
     try {
-      await axios.post('http://localhost:5000/training-programs/enroll', {
+      await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/training-programs/enroll`, {
         program: selectedProgram,
         employee: selectedEmployee
       });

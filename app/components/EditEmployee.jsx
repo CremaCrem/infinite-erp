@@ -73,7 +73,7 @@ const EditEmployee = ({ onClose, employee }) => {
     formData.get('picture')
 
     try {
-        const response = await axios.put(`http://localhost:5000/employee/${employee._id}`, formData);
+        const response = await axios.put(`${process.env.NEXT_PUBLIC_BACKEND_URL}/employee/${employee._id}`, formData);
         console.log('Employee updated:', response.data);
         // Show success toast
         toast.success('Recruit successfully edited!', {

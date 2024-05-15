@@ -13,7 +13,7 @@ const RelationsBox = () => {
   useEffect(() => {
     const fetchComplaints = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/relations');
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/relations`);
         setComplaints(response.data);
       } catch (error) {
         console.error('Error fetching complaints:', error);
@@ -34,8 +34,8 @@ const RelationsBox = () => {
   const handleStatusChange = async (id) => {
     try {
       if (newStatus !== '') {
-        await axios.put(`http://localhost:5000/relations/${id}`, { status: newStatus });
-        const response = await axios.get('http://localhost:5000/relations');
+        await axios.put(`${process.env.NEXT_PUBLIC_BACKEND_URL}/relations/${id}`, { status: newStatus });
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/relations`);
         setComplaints(response.data);
       }
       setEditStatusId(null);

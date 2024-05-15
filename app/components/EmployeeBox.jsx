@@ -17,7 +17,7 @@ const EmployeeBox = () => {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/employee');
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/employee`);
         setEmployees(response.data);
       } catch (error) {
         console.error('Error fetching employee data:', error);

@@ -37,7 +37,7 @@ const EditRecruitModal = ({ recruit, onClose, recruitId }) => {
         }
 
         try {
-            const response = await axios.put(`http://localhost:5000/recruit/${recruitId}`, formData);
+            const response = await axios.put(`${process.env.NEXT_PUBLIC_BACKEND_URL}/recruit/${recruitId}`, formData);
             console.log('Recruit updated:', response.data);
             toast.success('Recruit successfully edited!',{
                 position: 'top-center',

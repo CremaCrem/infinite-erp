@@ -22,7 +22,7 @@ const ResumePDF = ({ onClose }) => {
         formData.append('picture', picture);
         formData.append("file", file);
         try {
-            const result = await axios.post("http://localhost:5000/recruit", formData)
+            const result = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/recruit`, formData)
             console.log('Recruit added successfully:', result.data);
             toast.success('Recruit successfully added!',{
                 position: 'top-center',

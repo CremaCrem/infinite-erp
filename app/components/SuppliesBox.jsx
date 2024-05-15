@@ -80,7 +80,7 @@ const SuppliesBox = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/products', formData);
+      await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/products`, formData);
       console.log('Item added successfully');
       setFormData({
         brandName: '',
@@ -107,7 +107,7 @@ const SuppliesBox = () => {
   useEffect(() => {
     const fetchCategories = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/categories');
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/categories`);
             setCategories(response.data);
         } catch (error) {
             console.error('Error fetching categories:', error);
@@ -116,7 +116,7 @@ const SuppliesBox = () => {
 
     const fetchBrands = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/brands');
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/brands`);
             setBrands(response.data);
         } catch (error) {
             console.error('Error fetching brands:', error);
@@ -125,7 +125,7 @@ const SuppliesBox = () => {
 
     const fetchProducts = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/products');
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/products`);
             setProducts(response.data);
             setFilteredProducts(response.data);
         } catch (error) {
@@ -135,7 +135,7 @@ const SuppliesBox = () => {
 
     const fetchSales = async () => {
       try {
-          const response = await axios.get('http://localhost:5000/sales');
+          const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/sales`);
           setSales(response.data);
       } catch (error) {
           console.error('Error fetching sales:', error);

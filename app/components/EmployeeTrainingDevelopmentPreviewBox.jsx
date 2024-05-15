@@ -6,11 +6,11 @@ const EmployeeTrainingDevelopmentPreviewBox = () => {
   const [employeesAndPrograms, setEmployeesAndPrograms] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/training-programs')
+    axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/training-programs`)
       .then(response => {
         const programs = response.data;
         const promises = programs.map(program => {
-          return axios.get(`http://localhost:5000/training-programs/${program._id}/enrolled-employees`)
+          return axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/training-programs/${program._id}/enrolled-employees`)
             .then(response => ({
               programName: program.name,
               enrolledEmployees: response.data
