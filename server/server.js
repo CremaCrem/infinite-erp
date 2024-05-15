@@ -4,7 +4,8 @@ const mongoose = require("mongoose")
 server.use(express.json())
 const cors = require('cors')
 
-const mongoURL = "mongodb+srv://j3remyz1on:Pm12duvQmpReJgb6@cluster0.0sqyiib.mongodb.net/hr-sia-database"
+// const mongoURL = "mongodb+srv://j3remyz1on:Pm12duvQmpReJgb6@cluster0.0sqyiib.mongodb.net/hr-sia-database"
+const mongoURL = process.env.MONGO_URL;
 const path = require('path')
 const fs = require('fs')
 
