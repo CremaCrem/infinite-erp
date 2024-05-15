@@ -4,17 +4,16 @@ const mongoose = require("mongoose")
 server.use(express.json())
 const cors = require('cors')
 
+server.use(cors({
+    origin: 'https://infinite-erp.vercel.app',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 // const mongoURL = "mongodb+srv://j3remyz1on:Pm12duvQmpReJgb6@cluster0.0sqyiib.mongodb.net/hr-sia-database"
 const mongoURL = process.env.MONGO_URL;
 const path = require('path')
 const fs = require('fs')
-
-server.use(cors({
-    origin: 'https://infinite-erp.vercel.app',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify the allowed HTTP methods
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
-
 
 //Mongodb Connection
 mongoose.connect(mongoURL, {
