@@ -586,3 +586,4 @@ if (isProduction) {
       res.sendFile(path.resolve(__dirname, 'app', 'out', 'index.html'));
     });
   }
+module.exports = server;
