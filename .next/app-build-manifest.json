@@ -46,18 +46,13 @@
       "static/chunks/749-d51dfb10f6b683ff.js",
       "static/chunks/app/page-440ecac8f5175098.js"
     ],
-    "/recruitment/page": [
+    "/portal/page": [
       "static/chunks/webpack-9cea46053bcedc47.js",
       "static/chunks/fd9d1056-4dfc9e94511fc289.js",
       "static/chunks/69-9b917ee9ede65288.js",
       "static/chunks/main-app-e515e9ac34630c6b.js",
-      "static/chunks/a6eb9415-de0bb70c7b7cf472.js",
       "static/chunks/250-149fe57f894acf51.js",
-      "static/chunks/908-74eb929365e91f0a.js",
-      "static/chunks/604-bccc3ec518ebd477.js",
-      "static/chunks/778-0235ca54efc707f0.js",
-      "static/css/fb9a9af3f6f81ba5.css",
-      "static/chunks/app/recruitment/page-50f3ac2f2432f307.js"
+      "static/chunks/app/portal/page-0292f978885c1450.js"
     ],
     "/relations/page": [
       "static/chunks/webpack-9cea46053bcedc47.js",
@@ -70,14 +65,6 @@
       "static/chunks/796-50000e9976430a53.js",
       "static/chunks/app/relations/page-3854f9274f245481.js"
     ],
-    "/portal/page": [
-      "static/chunks/webpack-9cea46053bcedc47.js",
-      "static/chunks/fd9d1056-4dfc9e94511fc289.js",
-      "static/chunks/69-9b917ee9ede65288.js",
-      "static/chunks/main-app-e515e9ac34630c6b.js",
-      "static/chunks/250-149fe57f894acf51.js",
-      "static/chunks/app/portal/page-0292f978885c1450.js"
-    ],
     "/supplies/page": [
       "static/chunks/webpack-9cea46053bcedc47.js",
       "static/chunks/fd9d1056-4dfc9e94511fc289.js",
@@ -88,6 +75,19 @@
       "static/chunks/604-bccc3ec518ebd477.js",
       "static/css/fb9a9af3f6f81ba5.css",
       "static/chunks/app/supplies/page-a34ca41e0c91a0be.js"
+    ],
+    "/recruitment/page": [
+      "static/chunks/webpack-9cea46053bcedc47.js",
+      "static/chunks/fd9d1056-4dfc9e94511fc289.js",
+      "static/chunks/69-9b917ee9ede65288.js",
+      "static/chunks/main-app-e515e9ac34630c6b.js",
+      "static/chunks/a6eb9415-de0bb70c7b7cf472.js",
+      "static/chunks/250-149fe57f894acf51.js",
+      "static/chunks/908-74eb929365e91f0a.js",
+      "static/chunks/604-bccc3ec518ebd477.js",
+      "static/chunks/778-0235ca54efc707f0.js",
+      "static/css/fb9a9af3f6f81ba5.css",
+      "static/chunks/app/recruitment/page-50f3ac2f2432f307.js"
     ],
     "/training/page": [
       "static/chunks/webpack-9cea46053bcedc47.js",
