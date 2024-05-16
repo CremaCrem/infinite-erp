@@ -6,8 +6,8 @@ server.use(express.json())
 const cors = require('cors')
 const path = require('path')
 const fs = require('fs')
-const mongoURL = process.env.MONGO_URL;
-// const mongoURL = "mongodb+srv://j3remyz1on:Pm12duvQmpReJgb6@cluster0.0sqyiib.mongodb.net/hr-sia-database"
+// const mongoURL = process.env.MONGO_URL;
+const mongoURL = "mongodb+srv://j3remyz1on:Pm12duvQmpReJgb6@cluster0.0sqyiib.mongodb.net/hr-sia-database"
 // Determine environment
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -578,6 +578,8 @@ server.get('/api/search', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+server.use(express.static(path.join(__dirname, '../public')));
 
 if (isProduction) {
     server.use(express.static(path.join(__dirname, 'app', 'out')));
