@@ -1,30 +1,34 @@
+require('dotenv').config();
 const express = require("express")
 const server = express();
 const mongoose = require("mongoose")
 server.use(express.json())
 const cors = require('cors')
+const path = require('path')
+const fs = require('fs')
+const mongoURL = process.env.MONGO_URL;
+// const mongoURL = "mongodb+srv://j3remyz1on:Pm12duvQmpReJgb6@cluster0.0sqyiib.mongodb.net/hr-sia-database"
+// Determine environment
+const isProduction = process.env.NODE_ENV === 'production';
 
-server.use(cors({
-    origin: 'https://infinite-erp.vercel.app',
+const corsOptions = {
+    origin: isProduction ? 'https://infinite-erp.vercel.app' : 'http://localhost:3000',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
-}));
+  };
 
-// const mongoURL = "mongodb+srv://j3remyz1on:Pm12duvQmpReJgb6@cluster0.0sqyiib.mongodb.net/hr-sia-database"
-const mongoURL = process.env.MONGO_URL;
-const path = require('path')
-const fs = require('fs')
+server.use(cors(corsOptions));
 
-//Mongodb Connection
+// MongoDB Connection
 mongoose.connect(mongoURL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
-}).then(() => {
+  }).then(() => {
     console.log("Connected to database");
-}).catch(e => {
+  }).catch(e => {
     console.error("Error connecting to database:", e);
-});
+  });
 
 //Multer
 const maxSize = 10 * 1024 * 1024
@@ -574,3 +578,11 @@ server.get('/api/search', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+if (isProduction) {
+    server.use(express.static(path.join(__dirname, 'app', 'out')));
+  
+    server.get('*', (req, res) => {
+      res.sendFile(path.resolve(__dirname, 'app', 'out', 'index.html'));
+    });
+  }
