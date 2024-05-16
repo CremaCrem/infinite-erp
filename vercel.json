@@ -1,11 +1,7 @@
 {
   "version": 2,
-  "name": "infinite=sia",
+  "name": "infinite-sia",
   "builds": [
-    {
-      "src": "app/next.config.js",
-      "use": "@vercel/next"
-    },
     {
       "src": "server/server.js",
       "use": "@vercel/node"
@@ -14,11 +10,11 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/server/server.js"
+      "dest": "server/server.js"
     },
     {
       "src": "/(.*)",
-      "dest": "/app/$1"
+      "dest": "app/$1"
     }
   ],
   "env": {
